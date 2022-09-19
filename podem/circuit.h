@@ -10,6 +10,11 @@ typedef GATE* GATEPTR;
 class CIRCUIT
 {
     private:
+        // Appended attributes for Assignment-0 
+        unsigned TotalGateCounts;
+        vector<int> GateCounts;
+        ////////////////
+
         string Name;
         PATTERN Pattern;
         vector<GATE*> Netlist;
@@ -53,6 +58,19 @@ class CIRCUIT
             for (fite = Flist.begin();fite!=Flist.end();++fite) { delete *fite; }
         }
 
+        // Appended methods for Assignment-0
+        void ShowStatistics();
+        void CountGATEFUNC();
+        void CountTotalGates();
+        void PrintNetlist();
+        unsigned No_NOT_Gate() { return GateCounts[G_NOT]; }  // enum: G_NOT==4, ..., G_NAND==8
+        unsigned No_OR_Gate() { return GateCounts[G_OR]; }
+        unsigned No_NOR_Gate() { return GateCounts[G_NOR]; }
+        unsigned No_AND_Gate() { return GateCounts[G_AND]; }
+        unsigned No_NAND_Gate() { return GateCounts[G_NAND]; }
+        unsigned No_DFF() { return GateCounts[G_DFF]; }       // enum: G_DFF==9
+        ////////////////////////////////
+        
         void AddGate(GATE* gptr) { Netlist.push_back(gptr); }
         void SetName(string n){ Name = n;}
         string GetName(){ return Name;}
