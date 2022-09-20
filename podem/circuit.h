@@ -11,8 +11,10 @@ class CIRCUIT
 {
     private:
         // Appended attributes for Assignment-0 
-        unsigned TotalGateCounts;
-        vector<int> GateCounts;
+        vector<int> GateCounts{12};
+        unsigned ToTalNetCount;
+        unsigned BranchNetCount;
+        unsigned StemNetCount;
         ////////////////
 
         string Name;
@@ -43,6 +45,7 @@ class CIRCUIT
             POlist.reserve(512);
             PPIlist.reserve(2048);
             PPOlist.reserve(2048);
+            GateCounts.reserve(12);
         }
         CIRCUIT(unsigned NO_GATE, unsigned NO_PI = 128, unsigned NO_PO = 512,
                 unsigned NO_PPI = 2048, unsigned NO_PPO = 2048) {
@@ -51,6 +54,7 @@ class CIRCUIT
             POlist.reserve(NO_PO);
             PPIlist.reserve(NO_PPI);
             PPOlist.reserve(NO_PPO);
+            GateCounts.reserve(12);
         }
         ~CIRCUIT() {
             for (unsigned i = 0;i<Netlist.size();++i) { delete Netlist[i]; }
@@ -60,15 +64,20 @@ class CIRCUIT
 
         // Appended methods for Assignment-0
         void ShowStatistics();
-        void CountGATEFUNC();
-        void CountTotalGates();
         void PrintNetlist();
-        unsigned No_NOT_Gate() { return GateCounts[G_NOT]; }  // enum: G_NOT==4, ..., G_NAND==8
+        void CountGATEFUNC();
+        void CountNet();
+        unsigned No_Total_Gate();
+        unsigned No_NOT_Gate() { return GateCounts[G_NOT]; }
         unsigned No_OR_Gate() { return GateCounts[G_OR]; }
         unsigned No_NOR_Gate() { return GateCounts[G_NOR]; }
         unsigned No_AND_Gate() { return GateCounts[G_AND]; }
         unsigned No_NAND_Gate() { return GateCounts[G_NAND]; }
-        unsigned No_DFF() { return GateCounts[G_DFF]; }       // enum: G_DFF==9
+        unsigned No_DFF() { return GateCounts[G_DFF]; }
+        unsigned No_Branch_Net() { return BranchNetCount; }
+        unsigned No_Stem_Net() { return StemNetCount; }
+        unsigned No_Total_Signal_Net() { return ToTalNetCount; }
+        float No_Avg_Fanout();
         ////////////////////////////////
         
         void AddGate(GATE* gptr) { Netlist.push_back(gptr); }
@@ -88,7 +97,7 @@ class CIRCUIT
         unsigned No_PO() { return POlist.size(); }
         unsigned No_PPI() { return PPIlist.size(); }
         unsigned No_PPO() { return PPOlist.size(); }
-
+        
         void InitPattern(const char *pattern) {
             Pattern.Initialize(const_cast<char *>(pattern), PIlist.size(), "PI");
         }
