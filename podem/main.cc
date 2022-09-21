@@ -88,7 +88,6 @@ int main(int argc, char ** argv)
 
     if(option.retrieve("ass0")) {
         // This is assignment-0 of 2022 VLSI-Testing course.
-        cout << "Showing statistics of a given circuit..." << endl << endl;
         // Circuit.PrintNetlist();
         Circuit.ShowStatistics();
     }
