@@ -62,7 +62,7 @@ class CIRCUIT
             for (fite = Flist.begin();fite!=Flist.end();++fite) { delete *fite; }
         }
 
-        // Appended methods for Assignment-0
+        /**** Appended methods for Assignment-0 ****/
         void ShowStatistics();
         void PrintNetlist();
         void CountGATEFUNC();
@@ -78,8 +78,14 @@ class CIRCUIT
         unsigned No_Stem_Net() { return StemNetCount; }
         unsigned No_Total_Signal_Net() { return ToTalNetCount; }
         float No_Avg_Fanout();
-        ////////////////////////////////
-        
+        /**********************/
+
+        /**** Assignment 1 ****/
+        void FindAllPaths(GATE* StartGate, GATE* EndGate);
+        GATE* PIGate(const string& Name);
+        GATE* POGate(const string& Name);
+        /**********************/
+
         void AddGate(GATE* gptr) { Netlist.push_back(gptr); }
         void SetName(string n){ Name = n;}
         string GetName(){ return Name;}

@@ -3,6 +3,7 @@
 #include "circuit.h"
 #include "GetLongOpt.h"
 #include "ReadPattern.h"
+#include <string>
 using namespace std;
 
 // All defined in readcircuit.l
@@ -21,6 +22,8 @@ int SetupOption(int argc, char ** argv)
     option.usage("[options] input_circuit_file");
     option.enroll("ass0", GetLongOpt::NoValue,    // Assignment-0
             "This is assignment-0 of 2022 VLSI-Testing course.", 0);
+    option.enroll("path", GetLongOpt::NoValue,
+            "list and count all possible paths connecting the given PI and PO.", 0);
     option.enroll("help", GetLongOpt::NoValue,
             "print this help summary", 0);
     option.enroll("logicsim", GetLongOpt::NoValue,
@@ -39,6 +42,10 @@ int SetupOption(int argc, char ** argv)
             "set the output pattern file", 0);
     option.enroll("bt", GetLongOpt::OptionalValue,
             "set the backtrack limit", 0);
+    option.enroll("start", GetLongOpt::MandatoryValue,
+            "set the start gate of of path", 0);
+    option.enroll("end", GetLongOpt::MandatoryValue,
+            "set the end gate of of path", 0);
     int optind = option.parse(argc, argv);
     if ( optind < 1 ) { exit(0); }
     if ( option.retrieve("help") ) {
@@ -89,7 +96,27 @@ int main(int argc, char ** argv)
     if(option.retrieve("ass0")) {
         // This is assignment-0 of 2022 VLSI-Testing course.
         // Circuit.PrintNetlist();
+        printf("This is assignment 0 of 2022 VLSI Testing course.");
         Circuit.ShowStatistics();
+    } 
+    else if (option.retrieve("path")) {
+        // assignment-1
+        // Circuit.PrintNetlist();
+        cout << "This is path option." << endl;
+        const string StartGateName(option.retrieve("start")), EndGateName(option.retrieve("end"));
+        GATE* StartGate = Circuit.PIGate(StartGateName);
+        GATE* EndGate = Circuit.POGate("PO_" + EndGateName);
+        
+        if(StartGate && EndGate) {
+            Circuit.FindAllPaths(StartGate, EndGate);
+        } else if(!StartGate && EndGate) {
+            cout << StartGateName + " isn't a input of the circuit." <<endl;
+        } else if(StartGate && !EndGate) {
+            cout << EndGateName + " isn't a output of the circuit" <<endl;
+        } else {
+            cout << StartGateName + " isn't a input of the circuit." <<endl;
+            cout << EndGateName + " isn't a output of the circuit" <<endl;
+        }
     }
     else if (option.retrieve("logicsim")) {
         //logic simulator
