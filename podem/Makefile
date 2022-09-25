@@ -1,7 +1,7 @@
 
 CXX      = g++
 LINK     = g++
-CXXFLAGS = -O2 -Wall -DDEBUG
+CXXFLAGS = -O2 -Wall -DDEBUG -g
 #CXXFLAGS = -g -DDEBUG_ATPG -Wall #Turn on debugging
 INCPATH  =
 LIBS     = -lreadline -lcurses

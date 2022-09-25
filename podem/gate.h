@@ -24,6 +24,8 @@ class GATE
         bitset<PatternNum> WireValue[2]; //one pair of WireValues (length defined by PatternNum).
         bitset<PatternNum> FaultFlag;
     public:
+        bool IsVisit;
+
         //Initialize GATE
         GATE(): Function(G_BAD), Level(0), Value(X), Value_t(X), Inversion(false) {
             Input_list.reserve(4);
@@ -32,6 +34,7 @@ class GATE
             Count[1] = (0);
 	    WireValue[0].set();   //All parallel bitsets are set to X
 	    WireValue[1].reset();
+        IsVisit=false;
         }
         ~GATE() {}
         void SetName(string n){ Name = n;}

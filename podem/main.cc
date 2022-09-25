@@ -95,9 +95,9 @@ int main(int argc, char ** argv)
 
     if(option.retrieve("ass0")) {
         // This is assignment-0 of 2022 VLSI-Testing course.
-        // Circuit.PrintNetlist();
-        printf("This is assignment 0 of 2022 VLSI Testing course.");
-        Circuit.ShowStatistics();
+        cout << "This is assignment 0 of 2022 VLSI Testing course." << endl;
+        Circuit.PrintNetlist();
+        // Circuit.ShowStatistics();
     } 
     else if (option.retrieve("path")) {
         // assignment-1
@@ -105,10 +105,13 @@ int main(int argc, char ** argv)
         cout << "This is path option." << endl;
         const string StartGateName(option.retrieve("start")), EndGateName(option.retrieve("end"));
         GATE* StartGate = Circuit.PIGate(StartGateName);
-        GATE* EndGate = Circuit.POGate("PO_" + EndGateName);
+        GATE* EndGate = Circuit.POGate(EndGateName);
         
         if(StartGate && EndGate) {
-            Circuit.FindAllPaths(StartGate, EndGate);
+            Circuit.InitVisit();
+            Circuit.FindPaths(StartGate, EndGate);
+            cout << endl <<  "The number of paths from " << StartGateName << " to " << EndGateName 
+                 << ": " << Circuit.No_PathCount() << endl;
         } else if(!StartGate && EndGate) {
             cout << StartGateName + " isn't a input of the circuit." <<endl;
         } else if(StartGate && !EndGate) {

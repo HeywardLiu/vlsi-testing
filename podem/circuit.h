@@ -15,7 +15,11 @@ class CIRCUIT
         unsigned ToTalNetCount;
         unsigned BranchNetCount;
         unsigned StemNetCount;
-        ////////////////
+        
+        // Assignment-1
+        vector<GATE*> PathStack;
+        unsigned PathCount;
+
 
         string Name;
         PATTERN Pattern;
@@ -81,9 +85,13 @@ class CIRCUIT
         /**********************/
 
         /**** Assignment 1 ****/
-        void FindAllPaths(GATE* StartGate, GATE* EndGate);
         GATE* PIGate(const string& Name);
         GATE* POGate(const string& Name);
+        void PrintGateInfos(GATE* Gate);
+        unsigned No_PathCount() { return PathCount; }
+        void SetPathCount(unsigned n) { PathCount = n; }
+        void FindPaths(GATE* StartGate, GATE* EndGate);
+        void InitVisit();
         /**********************/
 
         void AddGate(GATE* gptr) { Netlist.push_back(gptr); }
