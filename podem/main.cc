@@ -101,14 +101,13 @@ int main(int argc, char ** argv)
     } 
     else if (option.retrieve("path")) {
         // assignment-1
-        // Circuit.PrintNetlist();
+
         cout << "This is path option." << endl;
         const string StartGateName(option.retrieve("start")), EndGateName(option.retrieve("end"));
-        GATE* StartGate = Circuit.PIGate(StartGateName);
-        GATE* EndGate = Circuit.POGate(EndGateName);
-        
+        GATE* StartGate = Circuit.Get_PIGate(StartGateName);
+        GATE* EndGate = Circuit.Get_POGate(EndGateName);
+
         if(StartGate && EndGate) {
-            Circuit.InitVisit();
             Circuit.FindPaths(StartGate, EndGate);
             cout << endl <<  "The number of paths from " << StartGateName << " to " << EndGateName 
                  << ": " << Circuit.No_PathCount() << endl;

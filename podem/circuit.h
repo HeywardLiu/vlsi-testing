@@ -18,7 +18,7 @@ class CIRCUIT
         
         // Assignment-1
         vector<GATE*> PathStack;
-        unsigned PathCount;
+        long long PathCount;
 
 
         string Name;
@@ -85,13 +85,11 @@ class CIRCUIT
         /**********************/
 
         /**** Assignment 1 ****/
-        GATE* PIGate(const string& Name);
-        GATE* POGate(const string& Name);
+        GATE* Get_PIGate(const string& Name);
+        GATE* Get_POGate(const string& Name);
         void PrintGateInfos(GATE* Gate);
         unsigned No_PathCount() { return PathCount; }
-        void SetPathCount(unsigned n) { PathCount = n; }
-        void FindPaths(GATE* StartGate, GATE* EndGate);
-        void InitVisit();
+        bool FindPaths(GATE* StartGate, GATE* EndGate);
         /**********************/
 
         void AddGate(GATE* gptr) { Netlist.push_back(gptr); }

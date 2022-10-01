@@ -3,18 +3,18 @@
 #include <iostream>
 using namespace std;
 
-void CIRCUIT::InitVisit() {
-    vector<GATE*>::iterator GateListIt;
-    for(GateListIt = Netlist.begin(); GateListIt != Netlist.end(); GateListIt++) {
-        (*GateListIt)->IsVisit = false;
-    }
-}
+/*
+    DFS Traversal for loop-free combination circuit.
+    We use Prune-and-Search technique,
+    to prevent from revisiting a gate which don't contain a path to dest gate.
+*/
 
-void CIRCUIT::FindPaths(GATE* StartGate, GATE* EndGate) {  // DFS Traversal for loop-free digraph 
+bool CIRCUIT::FindPaths(GATE* StartGate, GATE* EndGate) {  
     PathStack.push_back(StartGate);
-    StartGate->IsVisit = true;
+    bool find_path = false;
 
-    if(EndGate->GetID() == StartGate->GetID()) {    // Match
+    if(EndGate->GetID() == StartGate->GetID()) {
+        find_path = true;
         PathCount++;
         cout << endl;
         for(unsigned i=0; i<PathStack.size(); ++i) {
@@ -22,18 +22,22 @@ void CIRCUIT::FindPaths(GATE* StartGate, GATE* EndGate) {  // DFS Traversal for 
         }
         cout << endl;
     } else {
-        for(unsigned i = 0; i<StartGate->No_Fanout(); ++i) {            
-            if(StartGate->Fanout(i)->IsVisit == false) {
-                FindPaths(StartGate->Fanout(i), EndGate);
+        for(unsigned i = 0; i<StartGate->No_Fanout(); ++i) {
+            if(StartGate->Fanout(i)->FindDest != false) {    // Not been visited, or Containing a path to dest
+                if(FindPaths(StartGate->Fanout(i), EndGate))
+                    find_path = true;
             }
         }
     }
 
-    StartGate->IsVisit=false;
+    if(!find_path)                           // all subpaths of this gate didn't find dest gate.
+        StartGate->FindDest = false;    // to prevent from visiting all subpaths of the gate again, set the gate to false
+
     PathStack.pop_back();
+    return find_path;
 }
 
-GATE* CIRCUIT::PIGate(const string& Name) {    // Access by Name
+GATE* CIRCUIT::Get_PIGate(const string& Name) {    // Access by Name
     vector<GATE*>::iterator GateListIt;
     for(GateListIt = PIlist.begin(); GateListIt != PIlist.end(); GateListIt++) {
         if((*GateListIt)->GetName() == Name) 
@@ -42,7 +46,7 @@ GATE* CIRCUIT::PIGate(const string& Name) {    // Access by Name
     return nullptr;
 }
 
-GATE* CIRCUIT::POGate(const string& Name) {
+GATE* CIRCUIT::Get_POGate(const string& Name) {
     vector<GATE*>::iterator GateListIt;
     for(GateListIt = POlist.begin(); GateListIt != POlist.end(); GateListIt++) {
         if((*GateListIt)->GetName() == Name) 
@@ -52,7 +56,6 @@ GATE* CIRCUIT::POGate(const string& Name) {
 }
 
 void CIRCUIT::PrintGateInfos(GATE* Gate) {
-    cout << Gate->GetName() << " ";
-    // cout <<"ID: " << Gate->GetID() << " ,Name: " << Gate->GetName()  
-    //      << ", Function: " << Gate->GetFunction() << endl;
+    cout <<"ID: " << Gate->GetID() << " ,Name: " << Gate->GetName()  
+         << ", Function: " << Gate->GetFunction() << endl;
 }
