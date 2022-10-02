@@ -4,11 +4,10 @@
 using namespace std;
 
 /*
-    DFS Traversal for loop-free combination circuit.
-    We use Prune-and-Search technique,
-    to prevent from revisiting a gate which don't contain a path to dest gate.
+    The basic idea is DFS-Traversal of a loop-free combinational circuit.
+    We apply Prune-and-Search technique, to prevent from 
+    re-visiting a gate which don't contain a subpath to dest gate.
 */
-
 bool CIRCUIT::FindPaths(GATE* StartGate, GATE* EndGate) {  
     PathStack.push_back(StartGate);
     bool find_path = false;
@@ -30,7 +29,7 @@ bool CIRCUIT::FindPaths(GATE* StartGate, GATE* EndGate) {
         }
     }
 
-    if(!find_path)                           // all subpaths of this gate didn't find dest gate.
+    if(!find_path)                      // all subpaths of this gate didn't find dest gate.
         StartGate->FindDest = false;    // to prevent from visiting all subpaths of the gate again, set the gate to false
 
     PathStack.pop_back();
