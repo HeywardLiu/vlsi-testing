@@ -10,13 +10,13 @@ typedef GATE* GATEPTR;
 class CIRCUIT
 {
     private:
-        // Appended attributes for Assignment-0 
+        /**** Assignment 0 ****/
         vector<int> GateCounts{12};
         unsigned ToTalNetCount;
         unsigned BranchNetCount;
         unsigned StemNetCount;
         
-        // Assignment-1
+        /**** Assignment 1 ****/
         vector<GATE*> PathStack;
         long long PathCount;
 
@@ -66,7 +66,7 @@ class CIRCUIT
             for (fite = Flist.begin();fite!=Flist.end();++fite) { delete *fite; }
         }
 
-        /**** Appended methods for Assignment-0 ****/
+        /**** Assignment 0 ****/
         void ShowStatistics();
         void PrintNetlist();
         void CountGATEFUNC();
@@ -85,11 +85,13 @@ class CIRCUIT
         /**********************/
 
         /**** Assignment 1 ****/
-        GATE* Get_PIGate(const string& Name);
-        GATE* Get_POGate(const string& Name);
+        void Path(const string& SrcGate, const string& EndGate);
+        bool FindPaths(GATE* SrcGate, GATE* DestGate);
+        GATE* GetPIGate(const string& Name);
+        GATE* GetPOGate(const string& Name);
+        void PrintPathStack();
         void PrintGateInfos(GATE* Gate);
         unsigned No_PathCount() { return PathCount; }
-        bool FindPaths(GATE* StartGate, GATE* EndGate);
         /**********************/
 
         void AddGate(GATE* gptr) { Netlist.push_back(gptr); }
