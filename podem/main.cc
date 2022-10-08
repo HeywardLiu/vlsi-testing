@@ -102,24 +102,6 @@ int main(int argc, char ** argv)
     else if (option.retrieve("path")) {
         // assignment-1
         Circuit.Path(option.retrieve("start"), option.retrieve("end"));    
-                
-        // cout << "This is path option." << endl;
-        // const string StartGateName(option.retrieve("start")), EndGateName(option.retrieve("end"));    
-        // GATE* StartGate = Circuit.Get_PIGate(StartGateName);
-        // GATE* EndGate = Circuit.Get_POGate(EndGateName);
-
-        // if(StartGate && EndGate) {
-        //     Circuit.FindPaths(StartGate, EndGate);
-        //     cout << endl <<  "The number of paths from " << StartGateName << " to " << EndGateName 
-        //          << ": " << Circuit.No_PathCount() << endl;
-        // } else if(!StartGate && EndGate) {
-        //     cout << StartGateName + " isn't a input of the circuit." <<endl;
-        // } else if(StartGate && !EndGate) {
-        //     cout << EndGateName + " isn't a output of the circuit" <<endl;
-        // } else {
-        //     cout << StartGateName + " isn't a input of the circuit." <<endl;
-        //     cout << EndGateName + " isn't a output of the circuit" <<endl;
-        // }
     }
     else if (option.retrieve("logicsim")) {
         //logic simulator
