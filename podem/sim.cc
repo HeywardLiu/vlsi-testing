@@ -127,7 +127,7 @@ VALUE CIRCUIT::Evaluate(GATEPTR gptr)
 extern GATE* NameToGate(string);
 
 void PATTERN::Initialize(char* InFileName, int no_pi, string TAG)
-{
+{   // read pattern from input file 
     patterninput.open(InFileName, ios::in);
     if (!patterninput) {
         cout << "Unable to open input pattern file: " << InFileName << endl;

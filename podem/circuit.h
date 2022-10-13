@@ -82,7 +82,6 @@ class CIRCUIT
         unsigned No_Stem_Net() { return StemNetCount; }
         unsigned No_Total_Signal_Net() { return ToTalNetCount; }
         float No_Avg_Fanout();
-        /**********************/
 
         /**** Assignment 1 ****/
         void Path(const string& SrcGate, const string& EndGate);
@@ -92,7 +91,11 @@ class CIRCUIT
         void PrintPathStack();
         void PrintGateInfos(GATE* Gate);
         unsigned No_PathCount() { return PathCount; }
-        /**********************/
+
+        /**** Assignment 2 ****/
+        void GenRandomPattern(const string PatternName, const unsigned PatternNum, const bool ContainDontCare);
+        
+        /*****/
 
         void AddGate(GATE* gptr) { Netlist.push_back(gptr); }
         void SetName(string n){ Name = n;}

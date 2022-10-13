@@ -4,6 +4,9 @@
 #include "GetLongOpt.h"
 #include "ReadPattern.h"
 #include <string>
+// #include <filesystem>
+#include <unistd.h>
+
 using namespace std;
 
 // All defined in readcircuit.l
@@ -20,10 +23,20 @@ GetLongOpt option;
 int SetupOption(int argc, char ** argv)
 {
     option.usage("[options] input_circuit_file");
-    option.enroll("ass0", GetLongOpt::NoValue,    // Assignment-0
+    /* Assignment-0 */
+    option.enroll("ass0", GetLongOpt::NoValue,    
             "This is assignment-0 of 2022 VLSI-Testing course.", 0);
-    option.enroll("path", GetLongOpt::NoValue,
+    /* Assignment-1 */
+    option.enroll("path", GetLongOpt::NoValue,    
             "list and count all possible paths connecting the given PI and PO.", 0);
+    /* Assignment-2 */
+    option.enroll("pattern", GetLongOpt::NoValue,
+            "generate a random pattern.", 0);
+    option.enroll("unknown", GetLongOpt::NoValue,
+            "enable don't-care (X) in our generated pattern.", 0);
+    option.enroll("num",GetLongOpt::MandatoryValue,
+            "specify the number of the generated pattern", 0);
+    /**/
     option.enroll("help", GetLongOpt::NoValue,
             "print this help summary", 0);
     option.enroll("logicsim", GetLongOpt::NoValue,
@@ -93,15 +106,38 @@ int main(int argc, char ** argv)
     Circuit.Check_Levelization();
     Circuit.InitializeQueue();
 
-    if(option.retrieve("ass0")) {
-        // This is assignment-0 of 2022 VLSI-Testing course.
+    if(option.retrieve("ass0")) {             // Assignment-0 
         cout << "This is assignment 0 of 2022 VLSI Testing course." << endl;
-        Circuit.PrintNetlist();
-        // Circuit.ShowStatistics();
+        // Circuit.PrintNetlist();
+        Circuit.ShowStatistics();
     } 
-    else if (option.retrieve("path")) {
-        // assignment-1
+    else if (option.retrieve("path")) {       // assignment-1
         Circuit.Path(option.retrieve("start"), option.retrieve("end"));    
+    }
+    else if (option.retrieve("pattern")) {    // Assignment-2
+        int PatternNum = stoi(option.retrieve("num"));  // parse pattern name
+        string OutputPath = option.retrieve("output");;
+        string PatternName; 
+        string::size_type idx = OutputPath.rfind('/');
+        if(idx != string::npos)
+            PatternName = OutputPath.substr(idx+1);
+        else
+            PatternName = OutputPath;
+        
+        // const unsigned bufferSize = 100;
+        // char getcwdBuff[bufferSize];
+        // getcwd(getcwdBuff, bufferSize);
+        // string cwd(getcwdBuff);
+
+        // cout << "** The generated pattern file was saved in the following path: " 
+        //      << cwd << endl;
+        cout << "** Generate " << PatternNum << " patterns for " << Circuit.GetName() << ".bench" << endl;
+        cout << "** pattern name: " << PatternName << endl;
+    
+        if(option.retrieve("unknown"))
+            Circuit.GenRandomPattern(PatternName, PatternNum, true);
+        else
+            Circuit.GenRandomPattern(PatternName, PatternNum, false);
     }
     else if (option.retrieve("logicsim")) {
         //logic simulator
