@@ -15,27 +15,18 @@ void CIRCUIT::GenRandomPattern(const string PatternName, const unsigned PatternN
 
 /* PATTERN */ 
 void PATTERN::OpenOutFileStream() {
-    cout << "[OpenOutFileStream] Open File: " << PatternName << endl;
+    system("mkdir -p ../random_pattern");  // make directory to save pattern file only if it doesn't exsit
 
-	string str = "mkdir ";  // make dir to save our generated pattern file
-	str.append("../input");
-	cout << "[PATTERN::OpenOutFileStream] str: " << str << endl;
-	system(str.c_str());
-
-	str = "../input";  // set file path
-	str.append("/");
-	str.append(PatternName);
-
-
-	cout << "[PATTERN::OpenOutFileStream] str: " << str << endl;
+    string PatternFilePath = "../random_pattern/";
+	PatternFilePath.append(PatternName);
 
     if(!ofs.is_open())
-        ofs.open(str.c_str(), ofstream::out | ofstream::trunc);
+        ofs.open(PatternFilePath.c_str(), ofstream::out | ofstream::trunc);  // overwrite if pattern exsit
 
     if(!ofs.is_open())
-        cerr << "Can't open pattern file." << endl;
+        cerr << "**[-pattern] Fail to open pattern file: " << PatternFilePath << endl;
     else
-        cout << "Open pattern file successfully.";
+        cout << "**[-pattern] Successfully open pattern file: " << PatternFilePath << endl;
 }
 
 void PATTERN::GenRandomPattern(const unsigned PatternNum, bool ContainDontCare) {

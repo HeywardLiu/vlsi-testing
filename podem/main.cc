@@ -4,10 +4,11 @@
 #include "GetLongOpt.h"
 #include "ReadPattern.h"
 #include <string>
-// #include <filesystem>
 #include <unistd.h>
+#include <sys/types.h>
 
 using namespace std;
+
 
 // All defined in readcircuit.l
 extern char* yytext;
@@ -19,6 +20,8 @@ extern bool ParseError;
 extern void Interactive();
 
 GetLongOpt option;
+
+
 
 int SetupOption(int argc, char ** argv)
 {
@@ -36,6 +39,8 @@ int SetupOption(int argc, char ** argv)
             "enable don't-care (X) in our generated pattern.", 0);
     option.enroll("num",GetLongOpt::MandatoryValue,
             "specify the number of the generated pattern", 0);
+    option.enroll("mod_logicsim", GetLongOpt::NoValue,
+            "Simulate a circuit through CPU instructions.", 0);
     /**/
     option.enroll("help", GetLongOpt::NoValue,
             "print this help summary", 0);
@@ -70,6 +75,12 @@ int SetupOption(int argc, char ** argv)
 
 int main(int argc, char ** argv)
 {
+    /* Monitor Memory usage */
+    int pid=(int) getpid();
+    char buf[1024];
+    sprintf(buf, "cat /proc/%d/statm",pid);
+    system(buf);
+
     int optind = SetupOption(argc, argv);
     clock_t time_init, time_end;
     time_init = clock();
@@ -111,33 +122,24 @@ int main(int argc, char ** argv)
         // Circuit.PrintNetlist();
         Circuit.ShowStatistics();
     } 
-    else if (option.retrieve("path")) {       // assignment-1
+    else if (option.retrieve("path")) {       // Assignment-1
         Circuit.Path(option.retrieve("start"), option.retrieve("end"));    
     }
-    else if (option.retrieve("pattern")) {    // Assignment-2
-        int PatternNum = stoi(option.retrieve("num"));  // parse pattern name
-        string OutputPath = option.retrieve("output");;
-        string PatternName; 
-        string::size_type idx = OutputPath.rfind('/');
-        if(idx != string::npos)
-            PatternName = OutputPath.substr(idx+1);
-        else
-            PatternName = OutputPath;
+    else if (option.retrieve("pattern")) {    // Assignment-2, part-a
+        int PatternNum = stoi(option.retrieve("num"));
+        string PatternName = option.retrieve("output");;
         
-        // const unsigned bufferSize = 100;
-        // char getcwdBuff[bufferSize];
-        // getcwd(getcwdBuff, bufferSize);
-        // string cwd(getcwdBuff);
+        cout << "**[-pattern] Generate " << PatternNum << " patterns for " 
+             << Circuit.GetName() << ".bench" << endl;
 
-        // cout << "** The generated pattern file was saved in the following path: " 
-        //      << cwd << endl;
-        cout << "** Generate " << PatternNum << " patterns for " << Circuit.GetName() << ".bench" << endl;
-        cout << "** pattern name: " << PatternName << endl;
-    
         if(option.retrieve("unknown"))
             Circuit.GenRandomPattern(PatternName, PatternNum, true);
         else
             Circuit.GenRandomPattern(PatternName, PatternNum, false);
+    }
+    else if(option.retrieve("mod_logicsim")){  // Assignment-2, part-b
+        Circuit.InitPattern(option.retrieve("input"));
+        Circuit.Mod_LogicSimVectors();
     }
     else if (option.retrieve("logicsim")) {
         //logic simulator
@@ -186,5 +188,7 @@ int main(int argc, char ** argv)
     time_end = clock();
     cout << "total CPU time = " << double(time_end - time_init)/CLOCKS_PER_SEC << endl;
     cout << endl;
+    /* Monitor Memory Usage*/
+    system("ps aux | grep atpg");
     return 0;
 }

@@ -28,10 +28,11 @@ class PATTERN
         }
         
         /**** Assignment 2 ****/
-        void SetName(string Name) {PatternName = Name;}
+        void SetName(string Name) {PatternName = Name;}   // part-a
         void OpenOutFileStream();
-        void PIOutFileStream();
-        void AppendInList(GATE* Gate) {inlist.push_back(Gate);}
-        void GenRandomPattern(const unsigned PatternNum, bool ContainDontCare);
+        void AppendPIGate(GATE* Gate) {inlist.push_back(Gate);}
+        void GenRandomPattern(const unsigned PatternNum, const bool ContainDontCare);
+
+        void Mod_ReadNextPattern();  // part-b
 };
 #endif

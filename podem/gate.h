@@ -23,6 +23,10 @@ class GATE
         //bitset<PatternNum> WireValue2; //use two values to simulate don't care case
         bitset<PatternNum> WireValue[2]; //one pair of WireValues (length defined by PatternNum).
         bitset<PatternNum> FaultFlag;
+
+        /**** Assignment-2 ****/
+        bitset<2> ModValue;
+
     public:
         bool FindDest;
 
@@ -35,8 +39,15 @@ class GATE
 	    WireValue[0].set();   //All parallel bitsets are set to X
 	    WireValue[1].reset();
         FindDest = true;
+        ModValue.reset();
         }
         ~GATE() {}
+
+        /**** Assignment-2 ****/
+        bitset<2> Mod_GetValue() { return ModValue;}
+        void Mod_SetValue(bitset<2> val) { ModValue = val;}
+        /*********/
+        
         void SetName(string n){ Name = n;}
         void SetID(unsigned id){ ID = id;}
         void SetFunction(GATEFUNC f){ Function = f;}

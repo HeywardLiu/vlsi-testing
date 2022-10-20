@@ -92,9 +92,13 @@ class CIRCUIT
         void PrintGateInfos(GATE* Gate);
         unsigned No_PathCount() { return PathCount; }
 
-        /**** Assignment 2 ****/
-        void GenRandomPattern(const string PatternName, const unsigned PatternNum, const bool ContainDontCare);
+        /**** Assignment 2 ****/        
+        void GenRandomPattern(const string PatternName, const unsigned PatternNum, const bool ContainDontCare);  // Part-a
         
+        void Mod_LogicSimVectors(); // Part-b
+        void Mod_LogicSim();
+        void Mod_PrintIO();
+        bitset<2> Mod_Evaluate(GATEPTR gptr);
         /*****/
 
         void AddGate(GATE* gptr) { Netlist.push_back(gptr); }
