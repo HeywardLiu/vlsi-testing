@@ -19,10 +19,12 @@ void CIRCUIT::ParallelLogicSimVectors()
 	    }
 	    else break;
 	}
-	ScheduleAllPIs();
-	ParallelLogicSim();
-	PrintParallelIOs(pattern_idx);
+        ScheduleAllPIs();
+        ParallelLogicSim();
+        PrintParallelIOs(pattern_idx);
     }
+    Pattern.SetPatternCount(pattern_num);  // total number of a input pattern
+    PrintPSimStats();
 }
 
 //Assign next input pattern to PI's idx'th bits
@@ -71,6 +73,7 @@ void CIRCUIT::ParallelEvaluate(GATEPTR gptr)
     register unsigned i;
     bitset<PatternNum> new_value1(gptr->Fanin(0)->GetValue1());
     bitset<PatternNum> new_value2(gptr->Fanin(0)->GetValue2());
+    EvaluateCount += gptr->No_Fanin();
     switch(gptr->GetFunction()) {
         case G_AND:
         case G_NAND:

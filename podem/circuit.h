@@ -20,6 +20,8 @@ class CIRCUIT
         vector<GATE*> PathStack;
         long long PathCount;
 
+        /**** Assignment 3 ****/
+        unsigned long long EvaluateCount;
 
         string Name;
         PATTERN Pattern;
@@ -50,6 +52,7 @@ class CIRCUIT
             PPIlist.reserve(2048);
             PPOlist.reserve(2048);
             GateCounts.reserve(12);
+            EvaluateCount = 0;
         }
         CIRCUIT(unsigned NO_GATE, unsigned NO_PI = 128, unsigned NO_PO = 512,
                 unsigned NO_PPI = 2048, unsigned NO_PPO = 2048) {
@@ -59,6 +62,7 @@ class CIRCUIT
             PPIlist.reserve(NO_PPI);
             PPOlist.reserve(NO_PPO);
             GateCounts.reserve(12);
+            EvaluateCount = 0;
         }
         ~CIRCUIT() {
             for (unsigned i = 0;i<Netlist.size();++i) { delete Netlist[i]; }
@@ -94,12 +98,14 @@ class CIRCUIT
 
         /**** Assignment 2 ****/        
         void GenRandomPattern(const string PatternName, const unsigned PatternNum, const bool ContainDontCare);  // Part-a
-        
         void Mod_LogicSimVectors(); // Part-b
         void Mod_LogicSim();
         void Mod_PrintIO();
         bitset<2> Mod_Evaluate(GATEPTR gptr);
-        /*****/
+
+        /**** Assignment 3 ****/
+        void PrintPSimStats();
+
 
         void AddGate(GATE* gptr) { Netlist.push_back(gptr); }
         void SetName(string n){ Name = n;}
