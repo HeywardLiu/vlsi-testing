@@ -26,9 +26,8 @@ class GATE
 
         /**** Assignment-2 ****/
         bitset<2> ModValue;
-
+        
     public:
-        bool FindDest;
 
         //Initialize GATE
         GATE(): Function(G_BAD), Level(0), Value(X), Value_t(X), Inversion(false) {
@@ -43,11 +42,16 @@ class GATE
         }
         ~GATE() {}
 
+        /**** Assignment-1 ****/
+        bool FindDest;
+        
         /**** Assignment-2 ****/
         bitset<2> Mod_GetValue() { return ModValue;}
         void Mod_SetValue(bitset<2> val) { ModValue = val;}
-        /*********/
-        
+
+        /**** Assignment-3 ****/
+        bitset<PatternNum>* getWireValue() { return WireValue;}
+
         void SetName(string n){ Name = n;}
         void SetID(unsigned id){ ID = id;}
         void SetFunction(GATEFUNC f){ Function = f;}

@@ -41,7 +41,10 @@ int SetupOption(int argc, char ** argv)
             "specify the number of the generated pattern", 0);
     option.enroll("mod_logicsim", GetLongOpt::NoValue,
             "Simulate a circuit through CPU instructions.", 0);
-    /**/
+    /* Assignment-3 */
+    option.enroll("simulator", GetLongOpt::MandatoryValue,
+            "Generate a cpp code for logic simulating of given circuit.", 0);
+    /* */
     option.enroll("help", GetLongOpt::NoValue,
             "print this help summary", 0);
     option.enroll("logicsim", GetLongOpt::NoValue,
@@ -80,6 +83,7 @@ int main(int argc, char ** argv)
     char buf[1024];
     sprintf(buf, "cat /proc/%d/statm",pid);
     system(buf);
+    /***********************/
 
     int optind = SetupOption(argc, argv);
     clock_t time_init, time_end;
@@ -117,15 +121,15 @@ int main(int argc, char ** argv)
     Circuit.Check_Levelization();
     Circuit.InitializeQueue();
 
-    if(option.retrieve("ass0")) {             // Assignment-0 
+    if(option.retrieve("ass0")) {               // Assignment-0 
         cout << "This is assignment 0 of 2022 VLSI Testing course." << endl;
         // Circuit.PrintNetlist();
         Circuit.ShowStatistics();
     } 
-    else if (option.retrieve("path")) {       // Assignment-1
+    else if (option.retrieve("path")) {         // Assignment-1
         Circuit.Path(option.retrieve("start"), option.retrieve("end"));    
     }
-    else if (option.retrieve("pattern")) {    // Assignment-2, part-a
+    else if (option.retrieve("pattern")) {      // Assignment-2, part-a
         int PatternNum = stoi(option.retrieve("num"));
         string PatternName = option.retrieve("output");;
         
@@ -137,16 +141,22 @@ int main(int argc, char ** argv)
         else
             Circuit.GenRandomPattern(PatternName, PatternNum, false);
     }
-    else if(option.retrieve("mod_logicsim")){  // Assignment-2, part-b
+    else if(option.retrieve("mod_logicsim")) {  // Assignment-2, part-b
         Circuit.InitPattern(option.retrieve("input"));
         Circuit.Mod_LogicSimVectors();
+    }
+    else if(option.retrieve("simulator")) {     // Assignment-3, part-c
+        Circuit.InitPattern(option.retrieve("input"));
+        string ccs_file_name = option.retrieve("simulator");  // name of compiled-code-simulation file
+        Circuit.openSimulatorFile(ccs_file_name);
+        Circuit.ccsParallelLogicSimVectors();
     }
     else if (option.retrieve("logicsim")) {
         //logic simulator
         Circuit.InitPattern(option.retrieve("input"));
         Circuit.LogicSimVectors();
     }
-    else if (option.retrieve("plogicsim")) {
+    else if (option.retrieve("plogicsim")) {    // Assignment-3, part-a
         //parallel logic simulator
         Circuit.InitPattern(option.retrieve("input"));
         Circuit.ParallelLogicSimVectors();
@@ -188,7 +198,9 @@ int main(int argc, char ** argv)
     time_end = clock();
     cout << "total CPU time = " << double(time_end - time_init)/CLOCKS_PER_SEC << endl;
     cout << endl;
+    
     /* Monitor Memory Usage*/
-    system("ps aux | grep atpg");
+    // system("ps aux | grep atpg");
+    /*********************/
     return 0;
 }

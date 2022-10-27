@@ -21,7 +21,9 @@ class CIRCUIT
         long long PathCount;
 
         /**** Assignment 3 ****/
-        unsigned long long EvaluateCount;
+        unsigned long long EvaluateCount;    // Part-b
+        ofstream ofsOutFile, ofsHeader, ofsMain, ofsEval, ofsPrintIO;   // Part-c
+        string SimOutFileName;
 
         string Name;
         PATTERN Pattern;
@@ -104,8 +106,24 @@ class CIRCUIT
         bitset<2> Mod_Evaluate(GATEPTR gptr);
 
         /**** Assignment 3 ****/
-        void PrintPSimStats();
+        void PrintParallelSimStats();  // Part-b
+        void openSimulatorFile(string file_name);  // Part-c
+		void genHeader();
+		void genMainBegin();
+		void genMainEnd();
+		void genEvalBegin();
+		void genEvalEnd();
+        void genInitPattern();
+		void genPrintIOBegin();
+		void genPrintIOEnd();
 
+        void ccsParallelLogicSimVectors();
+		void ccsParallelLogicSim(bool flag);
+		void ccsParallelEvaluate(GATEPTR gptr, bool flag);
+		void ccsPrintParallelIOs(unsigned idx);
+
+		void combineFilesToOutput();
+		void setOutputName(string str) { SimOutFileName = str;}
 
         void AddGate(GATE* gptr) { Netlist.push_back(gptr); }
         void SetName(string n){ Name = n;}

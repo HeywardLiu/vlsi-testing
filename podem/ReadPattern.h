@@ -17,7 +17,7 @@ class PATTERN
         ofstream ofs;
 
         /**** Assignment 3 ****/
-        unsigned long long PatternCount;
+        unsigned long long PatternCount;  // total numbers of input pattern
     public:
         PATTERN(): no_pi_infile(0), PatternCount(0){}
         void Initialize(char* InFileName, int no_pi, string TAG);
@@ -38,7 +38,8 @@ class PATTERN
         void Mod_ReadNextPattern();  // part-b
 
         /**** Assignment 3 ****/
-        unsigned long long GetPatternCount() { return PatternCount; }
+        unsigned long long GetPatternCount() { return PatternCount; }  // Part-a
         void SetPatternCount(unsigned long long num) { PatternCount = num; }
+        vector<GATE*> &getInlist() { return inlist;}  // Part-b
 };
 #endif

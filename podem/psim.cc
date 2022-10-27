@@ -8,7 +8,7 @@ extern GetLongOpt option;
 // Event-driven Parallel Pattern Logic simulation
 void CIRCUIT::ParallelLogicSimVectors()
 {
-    cout << "Run Parallel Logic simulation" << endl;
+    cout << "[-plogicsim] Run Parallel Logic simulation" << endl;
     unsigned pattern_num(0);
     unsigned pattern_idx(0);
     while(!Pattern.eof()){ 
@@ -23,8 +23,8 @@ void CIRCUIT::ParallelLogicSimVectors()
         ParallelLogicSim();
         PrintParallelIOs(pattern_idx);
     }
-    Pattern.SetPatternCount(pattern_num);  // total number of a input pattern
-    PrintPSimStats();
+    Pattern.SetPatternCount(pattern_num);  // Number of total input patterns
+    PrintParallelSimStats();
 }
 
 //Assign next input pattern to PI's idx'th bits
@@ -120,7 +120,7 @@ void CIRCUIT::PrintParallelIOs(unsigned idx)
 			   if(PIGate(i)->GetWireValue(1, j)==1){
 	    			cout << "1";
 			   }
-			   else cout << "X";
+			   else cout << "2";
 		    }
 
 	    }
@@ -136,7 +136,7 @@ void CIRCUIT::PrintParallelIOs(unsigned idx)
 			   if(POGate(i)->GetWireValue(1, j)==1){
 	    			cout << "1";
 			   }
-			   else cout << "X";
+			   else cout << "2";
 		    }
 	    }
 	    cout << endl;
